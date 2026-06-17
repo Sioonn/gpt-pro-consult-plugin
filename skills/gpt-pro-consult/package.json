@@ -1,0 +1,13 @@
+{
+  "name": "gpt-pro-consult",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Drive ChatGPT (GPT-5.5 Pro) in a dedicated Chrome profile to consult on hard problems and return the answer to disk.",
+  "bin": {
+    "gpt-pro-consult": "consult.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.61.0"
+  }
+}

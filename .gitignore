@@ -1,0 +1,4 @@
+# node_modules는 일부러 커밋함 (플러그인 설치 후 npm install 없이 바로 동작)
+inspect-out/
+.chrome-profile/
+.DS_Store

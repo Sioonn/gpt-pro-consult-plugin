@@ -1,0 +1,14 @@
+{
+  "name": "sionhyeop-skills",
+  "owner": { "name": "Sanghyeop Lee", "email": "sionhyeop@gmail.com" },
+  "description": "Sanghyeop's Claude Code skills.",
+  "plugins": [
+    {
+      "name": "gpt-pro-consult",
+      "source": "./",
+      "description": "Consult GPT-5.5 Pro (web ChatGPT) for hard strategic problems via browser automation.",
+      "version": "1.0.0",
+      "keywords": ["gpt", "chatgpt", "gpt-5.5-pro", "consult"]
+    }
+  ]
+}
