@@ -173,6 +173,39 @@ node "$S/consult.mjs" --prompt "Reply with exactly one word: PONG"
   2. Google Chrome 설치돼 있어야 함. ChatGPT **Pro 계정** 필요(강도 Pro용).
   3. 첫 자문 실행 시 Chrome 창이 뜨면 거기서 ChatGPT 로그인(이후 쿠키 영속).
 
+## Linux 서버(헤드리스)에서 쓰기 (Ubuntu/Debian)
+
+이 스킬은 headful Chrome을 쓰므로 화면이 필요하다. 헤드리스 서버에선 **Xvfb(가상 디스플레이)**로 돌리고, **최초 로그인만 `ssh -X`/VNC로 진짜 화면**에 띄워 한다.
+
+```bash
+# 1) Google Chrome (Linux) 설치
+wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install -y ./google-chrome-stable_current_amd64.deb
+# 2) Xvfb 설치
+sudo apt install -y xvfb
+# 3) Node 18+ 확인 (없으면 nvm/apt로 설치)
+node -v
+```
+
+**최초 1회 로그인 (진짜 화면 필요):**
+```bash
+# 로컬에서 X 포워딩으로 접속 (mac 클라이언트는 XQuartz 필요, Linux는 기본)
+ssh -X user@server
+# 서버에서 — xvfb 말고 포워딩된 디스플레이로 실행 → Chrome 창이 로컬에 뜸
+node "$S/consult.mjs" --prompt "Reply with: PONG"   # 그 창에서 ChatGPT(Pro) 로그인
+# 로그인되면 쿠키가 ~/.claude/gpt-pro-consult-profile 에 영속됨
+```
+(VNC를 써도 됨 — Xvfb+x11vnc로 한 번 보고 로그인.)
+
+**이후 무인 실행 (Xvfb):**
+```bash
+bash "$S/consult-headless.sh" --prompt-file /tmp/q.md   # xvfb-run으로 헤드리스 자동 실행
+```
+
+- Linux에선 `resolveChrome()`가 `/usr/bin/google-chrome-stable` 등을 자동 탐색(특수 경로면 `CHROME_PATH`).
+- Linux 서버는 샌드박스 기동 실패가 흔해 **기본적으로 샌드박스 해제**(`USE_SANDBOX=false`). 강제하려면 `GPT_CONSULT_SANDBOX=1`.
+- 봇탐지: 학술망(대학 IP)·소량·단독 ChatGPT 웹 사용이면 위험 낮음. 단 웹 UI 자동화는 OpenAI 약관 위반이라 계정 제재 가능성이 **구조적으로 0은 아님**(IP 무관).
+
 ## 주의
 
 - 전용 프로필(`~/.claude/gpt-pro-consult-profile`) 쿠키로 동작 — 그 프로필에 ChatGPT Pro가 로그인돼 있어야 함(스킬 폴더 밖이라 배포물엔 미포함).

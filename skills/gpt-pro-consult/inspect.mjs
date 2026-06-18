@@ -27,9 +27,16 @@ function resolveChrome() {
     ];
     return cands.find((p) => existsSync(p)) || cands[0];
   }
+  if (process.platform === 'linux') {
+    const cands = ['/usr/bin/google-chrome-stable', '/usr/bin/google-chrome', '/usr/bin/chromium-browser', '/usr/bin/chromium'];
+    return cands.find((p) => existsSync(p)) || cands[0];
+  }
   return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 }
 const CHROME = resolveChrome();
+const USE_SANDBOX = process.env.GPT_CONSULT_SANDBOX != null
+  ? process.env.GPT_CONSULT_SANDBOX === '1'
+  : process.platform !== 'linux';
 
 const log = (...a) => process.stderr.write(a.join(' ') + '\n');
 const LOGIN_WALL = ['button:has-text("로그인")', 'a:has-text("로그인")', 'button:has-text("Log in")'];
@@ -41,7 +48,7 @@ async function visible(page, sels) {
 }
 
 const ctx = await chromium.launchPersistentContext(PROFILE_DIR, {
-  headless: false, executablePath: CHROME, chromiumSandbox: true,
+  headless: false, executablePath: CHROME, chromiumSandbox: USE_SANDBOX,
   viewport: { width: 1280, height: 900 },
   args: ['--disable-blink-features=AutomationControlled', '--no-first-run', '--no-default-browser-check'],
 });

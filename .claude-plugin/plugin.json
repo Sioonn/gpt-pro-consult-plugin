@@ -1,7 +1,7 @@
 {
   "name": "gpt-pro-consult",
   "displayName": "GPT-5.5 Pro Consult",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Consult GPT-5.5 Pro (web ChatGPT) for hard strategic/architectural problems. Drives a dedicated logged-in Chrome profile via Playwright, sends a prompt at Pro effort, waits for completion, and returns the full answer to disk. Self-repairing selectors. macOS/Windows.",
   "author": { "name": "Sanghyeop Lee", "email": "sionhyeop@gmail.com" },
   "homepage": "https://github.com/Sioonn/gpt-pro-consult-plugin",

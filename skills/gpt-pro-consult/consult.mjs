@@ -36,10 +36,20 @@ function resolveChrome() {
     ];
     return cands.find((p) => existsSync(p)) || cands[0];
   }
+  if (process.platform === 'linux') {
+    const cands = ['/usr/bin/google-chrome-stable', '/usr/bin/google-chrome', '/usr/bin/chromium-browser', '/usr/bin/chromium'];
+    return cands.find((p) => existsSync(p)) || cands[0];
+  }
   // macOS
   return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 }
 const CHROME = resolveChrome();
+
+// 샌드박스: mac/win은 켬(경고배너 제거). Linux 서버(특히 root/컨테이너)에선 샌드박스가
+// 기동 실패하는 일이 흔해 기본 해제. GPT_CONSULT_SANDBOX=1/0 로 강제 override 가능.
+const USE_SANDBOX = process.env.GPT_CONSULT_SANDBOX != null
+  ? process.env.GPT_CONSULT_SANDBOX === '1'
+  : process.platform !== 'linux';
 
 // ---- 로깅 ----------------------------------------------------------------
 const log = (...a) => process.stderr.write(`[${ts()}] ${a.join(' ')}\n`);
@@ -110,7 +120,7 @@ try {
   ctx = await chromium.launchPersistentContext(PROFILE_DIR, {
     headless: false,
     executablePath: CHROME,
-    chromiumSandbox: true, // Playwright 기본은 --no-sandbox(경고배너) → 샌드박스 켜서 제거
+    chromiumSandbox: USE_SANDBOX, // mac/win 켬(배너 제거), Linux 기본 해제(서버 기동 안정성)
     viewport: { width: 1280, height: 900 },
     args: ['--disable-blink-features=AutomationControlled', '--no-first-run', '--no-default-browser-check'],
   });
