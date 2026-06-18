@@ -7,7 +7,7 @@ GPT-5.5 Pro는 API/CLI로는 못 쓰고 웹에서만 되기 때문에, 전용 Ch
 ## 요구사항
 
 - **Node 18+**
-- **Google Chrome** 설치 (macOS / Windows)
+- **Google Chrome** 설치 (macOS / Windows / Linux)
 - **ChatGPT Pro 계정** (강도 Pro 사용)
 
 ## 설치

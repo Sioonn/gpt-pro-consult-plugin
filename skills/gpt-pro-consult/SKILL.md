@@ -165,7 +165,7 @@ node "$S/consult.mjs" --prompt "Reply with exactly one word: PONG"
 
 ## 배포 & 최초 설치
 
-- **배포 대상: macOS / Windows.** Chrome 경로는 `consult.mjs`/`inspect.mjs`의 `resolveChrome()`가 OS별로 처리. 특이 설치면 `CHROME_PATH` env로 override.
+- **배포 대상: macOS / Windows / Linux(서버, 헤드리스 가능).** Chrome 경로는 `resolveChrome()`가 OS별로 처리. 특이 설치면 `CHROME_PATH` env로 override. Linux 서버는 아래 "Linux 서버(헤드리스)" 섹션 참조.
 - 배포에 포함: `SKILL.md`, `consult.mjs`, `selectors.mjs`, `inspect.mjs`, `package.json`, `package-lock.json`. (`.mjs`도 전부 함께 배포됨)
 - **로그인 프로필은 스킬 폴더 밖**(`~/.claude/gpt-pro-consult-profile`)에 저장됨 — 배포물(스킬 폴더)에 쿠키가 **애초에 포함되지 않음**. 플러그인 업데이트에도 로그인 유지.
 - 받는 쪽 최초 1회:
